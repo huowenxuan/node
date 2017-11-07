@@ -55,12 +55,13 @@ function getDetail() {
                     let end = script.indexOf(".mp4") + 4
                     let mp4 = script.substring(start, end)
                     console.log(mp4);
+                    let dataIndex = 0
                     request(mp4)
                         .on('response', function (response) {
                             console.log('开始下载')
                         })
                         .on('data', function () {
-                            console.log('下载中')
+                            console.log('下载中', dataIndex++)
                         })
                         .on('close', () => {
                             console.log('下载完成')
