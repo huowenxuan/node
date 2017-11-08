@@ -21,10 +21,12 @@ function getDetail(url) {
             // console.log(title)
             $("script").each(function (idx, element) {
                 let script = $(element).html()
-                let start = script.indexOf("f:'") + 3
-                let end = script.indexOf(".mp4") + 4
-                let mp4 = script.substring(start, end)
-                console.log(mp4);
+                if (script.indexOf('flashvars') !== -1) {
+                    let start = script.indexOf("f:'") + 3
+                    let end = script.indexOf(".mp4") + 4
+                    let mp4 = script.substring(start, end)
+                    console.log(mp4);
+                }
             })
         });
     });
