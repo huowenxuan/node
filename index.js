@@ -77,4 +77,4 @@ async function getLists(start, end) {
   }
 }
 
-getLists(0, 2)
+getLists(0, 1)
