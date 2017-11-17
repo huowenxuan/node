@@ -5,9 +5,11 @@ var iconv = require('iconv-lite');
 var request = require('request');
 var fs = require('fs');
 
+let Host = 'http://www.79kmkm.com'
+
 function getDetail(url) {
   if (!url) {
-    url = 'http://www.63kmkm.com:8888/video/2017-11/29145.html'
+    url = Host + ':8888/video/2017-11/29145.html'
   }
   return new Promise((resolve)=>{
     http.get(url, function (sres) {
@@ -39,9 +41,9 @@ function getDetail(url) {
 
 async function getList(url) {
   if (!url) {
-    url = 'http://www.63kmkm.com:8888/diao/se57.html'
+    url = Host + ':8888/diao/se57.html'
   }
-  let url2 = 'http://www.63kmkm.com:8888/diao/se57_2.html'
+  let url2 = Host + ':8888/diao/se57_2.html'
 
   return new Promise((resolve)=>{
     http.get(url, function (sres) {
@@ -68,13 +70,21 @@ async function getList(url) {
 async function getLists(start, end) {
   for(let i = start; i < end; i++) {
     if (i === 0) {
-      await getList('http://www.63kmkm.com:8888/diao/se57.html')
+      await getList(Host + ':8888/diao/se57.html')
     } else {
-      await getList('http://www.63kmkm.com:8888/diao/se57_' + (i+1) + '.html')
+      await getList(Host + ':8888/diao/se57_' + (i+1) + '.html')
     }
     console.log('=========', i, '/', end - start)
     
   }
 }
 
-getLists(0, 1)
+// getLists(0, 10)
+getList('http://www.79kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
+getList('http://www.21kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
+getList('http://www.92kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
+getList('http://www.25kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
+getList('http://www.68kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
+getList('http://www.91kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
+getList('http://www.68kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
+getList('http://www.79kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
