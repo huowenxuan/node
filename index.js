@@ -1,4 +1,4 @@
-
+﻿
 var cheerio = require('cheerio');
 var http = require('http');
 var iconv = require('iconv-lite');
@@ -77,4 +77,4 @@ async function getLists(start, end) {
   }
 }
 
-getLists(0, 2)
+getLists(0, 5)
