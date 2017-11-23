@@ -79,12 +79,11 @@ async function getLists(start, end) {
   }
 }
 
-// getLists(0, 10)
-getList('http://www.79kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
-getList('http://www.21kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
-getList('http://www.92kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
-getList('http://www.25kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
-getList('http://www.68kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
-getList('http://www.91kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
-getList('http://www.68kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
-getList('http://www.79kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
+getLists(0, 15)
+// getList('http://www.79kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
+// getList('http://www.21kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
+// getList('http://www.92kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
+// getList('http://www.25kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
+
+// getList('http://www.91kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
+// getList('http://www.68kmkm.com' + ':8888/diao/se57.html').then(()=>{}).catch(()=>{})
