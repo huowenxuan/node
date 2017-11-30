@@ -10,8 +10,9 @@ var iconv = require('iconv-lite');
  * TODO: 通过多个视频详情的url数组批量获取视频地址
  */
 
-let Host = 'http://www.ygdy8.net'
-let timeoutSecond = 2
+let Host = 'http://www.ygdy8.com'
+let timeoutSecond = 3
+const charset = 'gb2312'
 
 let detailTimeoutList = []
 let detailErrorList = []
@@ -33,7 +34,7 @@ function getDetail(url, next) {
         clearTimeout(timer)
     }, timeoutSecond * 1000)
 
-    superagent.get(url).charset('gb2312').end(function (err, res) {
+    superagent.get(url).charset(charset).end(function (err, res) {
         clearTimeout(timer)
 
         if (err) {
@@ -56,7 +57,6 @@ function getDetail(url, next) {
 
 // /html/gndy/dyzz/list_23_1.html
 function getList(url, next, limit, count) {
-	console.log(url)
     let timer = setTimeout(()=>{
         pageTimeoutList.push(url)
         // console.log('获取一页超时'+ url)
@@ -65,7 +65,7 @@ function getList(url, next, limit, count) {
         clearTimeout(timer)
     }, timeoutSecond * 1000)
 
-    superagent.get(url).charset('gb2312').end(function (err, res) {
+    superagent.get(url).charset(charset).end(function (err, res) {
         clearTimeout(timer)
 
         if (err) {
@@ -93,7 +93,7 @@ function getList(url, next, limit, count) {
 }
 
 // 获取最新
-function getNewests(start, end) {
+function getNews(start, end) {
     let asyncList = []
     for (let i = start; i < end; i++) {
         let url = Host + '/html/gndy/dyzz/list_23_' + (i + 1) + '.html'
@@ -119,12 +119,13 @@ function getNewests(start, end) {
 // 搜索，不能小于四个字节
 function search(text) {
 	// text为utf-8，需要转换为gb2312，再encode，失败
-    let str = iconv.encode(text,'gb2312'); 
-	str = encodeURI(str)
-	console.log(str)
-	getList('http://s.dydytt.net/plus/search.php?kwtype=0&keyword=' + str)
+    let buffer = iconv.encode(text,'gb2312');
+    let char = ''
+    for (let byte of buffer) {
+        char = char + '%' + byte.toString(16)
+    }
+    getList('http://s.dydytt.net/plus/search.php?kwtype=0&keyword=' + char)
 }
 
-search('风暴')
-// getNewests(0, 15)
-
+search('白鹿原')
+// getNews(0, 2)
