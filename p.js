@@ -1,10 +1,10 @@
 ﻿var async = require('async');
-var iconv = require('iconv-lite');
 let {getHTML} = require('./request')
 
-let Host = 'http://www.ygdy8.net' // net不反爬，com反爬
-let SearchHost = 'http://www.ygdy8.com' // 只有com可跳转到搜索
-let timeoutSecond = 3
+// http://www.68kvkv.com/ http://www.91kmkm.com/ http://www.25kmkm.com/ http://www.21kmkm.com/ http://www.92kmkm.com/
+// http://www.79kmkm.com/ 67popo.com 85kvkv.com 85kvkv 60 76 78kvkv
+let Host = 'http://www.10soso.com'
+let timeoutSecond = 2
 
 let detailTimeoutList = []
 let detailErrorList = []
@@ -28,7 +28,7 @@ function logError() {
 function requestTimeout(url, errList, next) {
   let timer = setTimeout(() => {
     errList.push(url)
-    next && next('timeout', null)
+    next && next(null, null)
     next = null
     clearTimeout(timer)
   }, timeoutSecond * 1000)
@@ -37,61 +37,72 @@ function requestTimeout(url, errList, next) {
 
 function requestError(url, errList, err, next) {
   errList.push(url)
-  next && next(err, null)
+  next && next(null, null)
   next = null
 }
 
-// /html/gndy/dyzz/20171126/55612.html
+// eg: /video/2017-11/29494.html
 function getDetail(url, next) {
   let timer = requestTimeout(url, detailTimeoutList, next)
-  getHTML(url, null, (err, $) => {
+  getHTML(url, null, (err, $)=>{
     clearTimeout(timer)
     if (err) {
       requestError(url, detailErrorList, err, next)
     } else {
-      let hrefs = []
-      $("tbody tr td a").each(function (idx, element) {
-        let href = $(element).attr('href')
-        if (href.indexOf('ftp://') !== -1) {
-          console.log(href)
-          hrefs.push(href)
+      // 获取到的数据只有script中有mp4
+      let mp4s = []
+      $("script").each(function (idx, element) {
+        let script = $(element).html()
+        if (script.indexOf('flashvars') !== -1) {
+          let start = script.indexOf("f:'") + 3
+          let end = script.indexOf(".mp4") + 4
+          let mp4 = script.substring(start, end)
+          mp4s.push(mp4)
         }
       })
-      next && next(null, hrefs)
+      next && next(null, mp4s)
     }
   })
 }
 
-// /html/gndy/dyzz/list_23_1.html
-function getList(host=Host, url, next, start, end) {
+// getDetail('http://www.85kvkv.com/video/2017-11/29547.html')
+// getDetail(Host + '/video/2017-11/29494.html')
+
+// eg: /diao/se57.html  /diao/se57_2.html
+function getList(url, next, start, end) {
   let timer = requestTimeout(url, pageTimeoutList, next)
-  getHTML(url, null, (err, $) => {
-    clearTimeout(timer)
+  getHTML(url, null, (err, $)=>{
     if (start !== undefined && start !== null && end !== undefined && end !== null) {
       console.log(`正在获取第${start}页，共${end}页`)
     }
-
+    clearTimeout(timer)
+    
     if (err) {
       requestError(url, pageErrorList, err, next)
     } else {
       let asyncList = []
-      $('tbody tr td b a').each(function (index, element) {
-        let detailUrl = host + $(element).attr('href')
+      $('.video_box a').each(function (index, element) {
+        let $element = $(element);
+        let detailUrl = Host + $element.attr('href')
         asyncList.push((next2) => getDetail(detailUrl, next2))
       });
-      // 并行 parallel 串行 series parallelLimit
-      async.parallel(asyncList, next)
+      // 并行
+      async.parallel(asyncList, (err, res) => {
+        next && next(null, res)
+      })
     }
   })
 }
 
-// 获取最新
-function getNews(start, end, cb) {
+// getList(Host + '/diao/se57.html')
+
+function getLists(start, end, cb) {
   let asyncList = []
 
   for (let i = start; i <= end; i++) {
-    let url = Host + '/html/gndy/dyzz/list_23_' + i + '.html'
-    asyncList.push((next) => getList(Host, url, next, i, end))
+    let url = Host + '/diao/se57.html'
+    if (i !== 1) url = Host + '/diao/se57_' + i + '.html'
+    asyncList.push((next) => getList(url, next, i, end))
   }
 
   clearError()
@@ -99,28 +110,13 @@ function getNews(start, end, cb) {
   async.series(asyncList, (err, res) => {
     cb && cb(err, res)
     logError()
+    // console.log(err)
   })
 }
 
-// 搜索，不能小于四个字节
-function search(text, cb) {
-  // text为utf-8，需要转换为gb2312，再encode，失败
-  let buffer = iconv.encode(text, 'gb2312');
-  let char = ''
-  for (let byte of buffer) {
-    char = char + '%' + byte.toString(16)
-  }
-
-  clearError()
-  getList(SearchHost, 'http://s.dydytt.net/plus/search.php?kwtype=0&keyword=' + char, (err, res) => {
-    cb && cb(err, res)
-    logError()
-  })
-}
-
+// getLists(1, 3, (err, cb)=>{
+//  
+// })
 module.exports = {
-  getDetail,
-  getList,
-  getNews,
-  search,
+  getLists,
 }
