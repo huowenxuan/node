@@ -18,11 +18,18 @@ function clearError() {
   pageErrorList = []
 }
 
-function logError() {
+function handleError() {
   console.log('详情超时：', detailTimeoutList)
   console.log('详情错误：', detailErrorList)
   console.log('一页超时：', pageTimeoutList)
   console.log('一页错误：', pageErrorList)
+
+  return {
+    'timeoutDetail': detailTimeoutList,
+    'timeoutPage': pageTimeoutList,
+    'errorDetail': detailErrorList,
+    'errorPage': pageErrorList
+  }
 }
 
 function requestTimeout(url, errList, next) {
@@ -98,8 +105,7 @@ function getNews(start, end, cb) {
   clearError()
   // 串行
   async.series(asyncList, (err, res) => {
-    cb && cb(err, res)
-    logError()
+    cb && cb(handleError(), res)
   })
 }
 
@@ -114,8 +120,7 @@ function search(text, cb) {
 
   clearError()
   getList(SearchHost, 'http://s.dydytt.net/plus/search.php?kwtype=0&keyword=' + char, (err, res) => {
-    cb && cb(err, res)
-    logError()
+    cb && cb(handleError(), res)
   })
 }
 

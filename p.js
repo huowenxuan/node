@@ -18,11 +18,18 @@ function clearError() {
   pageErrorList = []
 }
 
-function logError() {
+function handleError() {
   console.log('详情超时：', detailTimeoutList)
   console.log('详情错误：', detailErrorList)
   console.log('一页超时：', pageTimeoutList)
   console.log('一页错误：', pageErrorList)
+
+  return {
+    'timeoutDetail': detailTimeoutList,
+    'timeoutPage': pageTimeoutList,
+    'errorDetail': detailErrorList,
+    'errorPage': pageErrorList
+  }
 }
 
 function requestTimeout(url, errList, next) {
@@ -108,9 +115,7 @@ function getLists(start, end, cb) {
   clearError()
   // 串行
   async.series(asyncList, (err, res) => {
-    cb && cb(err, res)
-    logError()
-    // console.log(err)
+    cb && cb(handleError(), res)
   })
 }
 
