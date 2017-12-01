@@ -28,7 +28,7 @@ function logError() {
 function requestTimeout(url, errList, next) {
   let timer = setTimeout(() => {
     errList.push(url)
-    next && next('timeout', null)
+    next && next(null, null)
     next = null
     clearTimeout(timer)
   }, timeoutSecond * 1000)
@@ -37,7 +37,8 @@ function requestTimeout(url, errList, next) {
 
 function requestError(url, errList, err, next) {
   errList.push(url)
-  next && next(err, null)
+  // 如果第一个参数error存在，会停止异步操作
+  next && next(null, null)
   next = null
 }
 
