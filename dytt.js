@@ -124,6 +124,8 @@ function search(text, cb) {
   })
 }
 
+search('尼罗河')
+
 module.exports = {
   getDetail,
   getList,
