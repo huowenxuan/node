@@ -112,7 +112,8 @@ function search(text, cb) {
     })
 }
 
-search('尼罗河')
+// getDetail('http://www.dy2018.com/i/96733.html?from=singlemessage&isappinstalled=1')
+search('无心法师')
 
 module.exports = {
     getDetail,
