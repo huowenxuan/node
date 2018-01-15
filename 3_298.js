@@ -2,7 +2,7 @@
 let {getHTML} = require('./request')
 
 // 68kvkv 91kmkm 25kmkm 21kmkm 92kmkm 79kmkm 67popo 85kvkv 85kvkv 60 76 78kvkv 00pcpc 05pcpc 02pcpc
-let Host = 'https://www.298aa.com'
+let Host = 'https://www.653cc.com'
 
 let detailTimeoutList = []
 let detailErrorList = []
@@ -102,7 +102,7 @@ function getList(url, next, start, end) {
 }
 
 // getDetail('https://www.298aa.com/htm/vod1/718.htm')
-getList('https://www.298aa.com/htm/mp4list7/')
+getList('https://www.653cc.com/htm/mp4list7/')
 
 // getList(Host + '/diao/se57.html')
 

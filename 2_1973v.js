@@ -86,7 +86,7 @@ function getList(url, next, start, end) {
 }
 
 // getDetail('https://www.1973v.com/Html/87/23706.html#')
-getList('https://www.1973v.com/Html/60/')
+getList('https://www.3195v.com/Html/89/')
 // getList(Host + '/diao/se57.html')
 
 function getLists(start, end, cb) {

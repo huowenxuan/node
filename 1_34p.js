@@ -110,7 +110,7 @@ function getLists(start, end, cb) {
     })
 }
 
-getLists(6, 25, (err, cb) => {
+getLists(0, 10, (err, cb) => {
     //
 })
 module.exports = {

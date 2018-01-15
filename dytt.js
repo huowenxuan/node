@@ -113,7 +113,7 @@ function search(text, cb) {
 }
 
 // getDetail('http://www.dy2018.com/i/96733.html?from=singlemessage&isappinstalled=1')
-search('无心法师')
+search('致我们单纯的小')
 
 module.exports = {
     getDetail,
