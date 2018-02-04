@@ -26,5 +26,5 @@ function getHTML(url, options, cb) {
 }
 
 module.exports = {
-  getHTML
+  getHTML,
 }
