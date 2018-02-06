@@ -9,7 +9,7 @@ function getDetail(url, next) {
       let time = new Date()
       let showTime = time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds()
       if (res.text().indexOf('服装') >= 0) {
-        console.log(showTime, '--', 'YES')
+        console.log(showTime, '--', '!!!!!!!!!!!!!!!YES!!!!!!!!!!!!!!!')
       } else {
         console.log(showTime, '--', 'NO')
       }
