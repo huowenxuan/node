@@ -1,14 +1,66 @@
+/**
+ * 按照顺序同步依次执行每个promise
+ * 返回每次的结果组成的数组，每当有一个报错都会直接catch
+ * @param values
+ * @param shouldCatch
+ * @return {Promise<any>}
+ */
+function syncPromiseCatch(values) {
+  let response = []
+  let idx = 0
+  return new Promise((resolve, reject) => {
+    (function next() {
+      values[idx]().then((res) => {
+        response.push(res)
+
+        if (idx < (values.length - 1)) {
+          idx++
+          next()
+        } else {
+          resolve(response)
+        }
+      }).catch((e) => reject(e))
+    })()
+  })
+}
+
+function syncPromise(values) {
+  let response = []
+  let idx = 0
+
+  if (values.length === 0)
+    return Promise.resolve([])
+
+  return new Promise((resolve, reject) => {
+    (function next() {
+      function thenPromise(res) {
+        response.push(res)
+        if (idx < (values.length - 1)) {
+          idx++
+          next()
+        } else {
+          resolve(response)
+        }
+      }
+      values[idx]().then(thenPromise).catch(thenPromise)
+    })()
+  })
+}
+
+function delay(duration = 500) {
+  return new Promise((resolve) => setTimeout(resolve, duration))
+}
+
+function toSet(arr) {
+  let set = new Set()
+  for (let item of arr) {
+    set.add(item)
+  }
+  return set
+}
 
 module.exports = {
-  Headers: {
-    charset: 'utf-8',
-    Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng',
-    'Accept-Encoding': 'gzip, deflate',
-    'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
-    'Cache-Control': 'max-age=0',
-    'Host': 'weixin.sogou.com',
-    'Proxy-Connection': 'keep-alive',
-    'Upgrade-Insecure-Requests': 1,
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36',
-  }
+  syncPromise,
+  delay,
+  toSet
 }

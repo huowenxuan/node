@@ -1,25 +1,30 @@
-var superagent = require('superagent')
-require('superagent-charset')(superagent)
-var common = require('./common')
+var axios = require('axios')
+var tunnel = require('tunnel')
 
-function get(url, params = {headers: {}, charset: 'gb2312'}, cb) {
-  let headers = {}
-  Object.assign(headers, common.Headers)
-  Object.assign(headers, params.headers)
-  let charset = params.charset || 'gb2312'
+const Headers = {
+  charset: 'utf-8',
+  'Content-Type': 'text/html; charset=UTF-8',
+  Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng',
+  'Accept-Encoding': 'gzip, deflate',
+  'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+  'Cache-Control': 'max-age=0',
+  'Proxy-Connection': 'keep-alive',
+  'Upgrade-Insecure-Requests': 1,
+  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36',
 
-    superagent.get(url)
-    .set(headers)
-    .timeout(10000)
-    .charset(charset)
-    .end((err, res) => cb && cb(err, res && res.text))
+}
+
+function get(url, configs) {
+  if (!configs) configs = {}
+  if (!configs.headers) configs.headers = {}
+  Object.assign(configs.headers, Headers)
+
+  let params = {method: 'get', url, timeout: 2000}
+  Object.assign(params, configs)
+  return axios(params).then((res)=>res.data)
 }
 
 function post(url, data, cb) {
-  superagent.post(url)
-    .set(Headers)
-    .send(data)
-    .end((err, res) => cb && cb(err, res && res.text))
 }
 
 module.exports = {

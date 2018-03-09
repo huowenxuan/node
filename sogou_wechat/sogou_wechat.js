@@ -3,12 +3,14 @@ var cheerio = require('cheerio');
 var _ = require('lodash')
 var readline = require('readline')
 var request = require('./request')
+var ProxyIP = require('./proxy_ip')
+var common = require('./common')
 
 function formatOfficialList($) {
   let list = []
 
   // 获取公众号列表
-  const listAssign = (idx, k, v)=>{
+  const listAssign = (idx, k, v) => {
     if (!list[idx]) list[idx] = {}
     list[idx][k] = v
   }
@@ -87,7 +89,6 @@ function formatOfficialList($) {
 }
 
 function captcha($) {
-  console.log('需要验证码')
   return
 
   // console.log($.html())
@@ -115,45 +116,72 @@ function captcha($) {
 /**
  * @param title
  * @param page 每页十个
- * @param cb
  */
-function searchOfficial(title, page, cb) {
+let ipCount = 1
+function searchOfficial(title, page) {
   let buffer = iconv.encode(title, 'utf-8')
   let char = ''
   for (let byte of buffer) {
     char = char + '%' + byte.toString(16)
   }
   let searchUrl = 'http://weixin.sogou.com/weixin?type=1&s_from=input&query=' + char + '&page=' + page
-  
-  request.get(searchUrl, {charset: 'utf-8'}, (error, html) => {
-    let $ = cheerio.load(html, {decodeEntities: false});
 
-    if (error) {
-      cb && cb(error, null)
-      return
-    }
+  let onError = (e, ip) => {
+    console.log(e.message)
+    ProxyIP.destroyIP(ip)
 
-    if ($.html().indexOf('验证码') >= 0) {
-      captcha($)
-    } else {
-      cb && cb(null, formatOfficialList($))
-    }
-  })
+    return common.delay()
+      .then(() => {
+        ipCount++
+        return searchOfficial(title, page)
+      })
+  }
+  return ProxyIP.IP().then((ip) => {
+    return request.get(
+      searchUrl, {
+        proxy: {
+          // host: '140.143.96.216',
+          // port: '80',
+          host: ip.IP,
+          port: ip.PORT
+        }
+      })
+      .then((html) => {
+        console.log(ip)
+        let $ = cheerio.load(html, {decodeEntities: false});
+        if ($.html().indexOf('验证码') >= 0) {
+          captcha($)
+          console.log('需要验证码')
+          // throw new Error('需要验证码')
+          return onError(new Error('需要验证码'), ip)
+        } else {
+          return formatOfficialList($)
+        }
+      })
+      .catch((e) => {
+        // throw e
+        return onError(e, ip)
+      })
+    })
 }
 
-// setInterval(()=>{
-  searchOfficial('糖水社区', 1, (error, res) => {
-    if (error) {
-      console.log('Error:', error)
-      return
-    }
+let arr = []
+for (let i = 0; i < 10000; i++) {
+  arr.push(() => common.delay()
+    .then(() => searchOfficial('糖水社区', 1))
+    .then((res) => {
+      const {data, number, page} = res
+      console.log('共:', number, '个')
+      console.log('本页有:', data.length, '个')
+      console.log('当前是第:', page, '页')
+      console.log(res.data.length + '个结果')
+      console.log()
+    })
+    .catch((e) => {
+      console.log('Error:', e.message)
+    }))
+}
 
-    const {data, number, page} = res
-    console.log('共:', number, '个')
-    console.log('本页有:', data.length, '个')
-    console.log('当前是第:', page, '页')
-    console.log()
-    console.log(res.data)
-  })
-// }, 100)
+ProxyIP.start()
+common.syncPromise(arr)
 
