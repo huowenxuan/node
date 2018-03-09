@@ -130,8 +130,7 @@ function searchOfficial(title, page) {
     console.log(e.message)
     ProxyIP.destroyIP(ip)
 
-    return common.delay()
-      .then(() => {
+    return common.delay().then(() => {
         ipCount++
         return searchOfficial(title, page)
       })
@@ -151,15 +150,12 @@ function searchOfficial(title, page) {
         let $ = cheerio.load(html, {decodeEntities: false});
         if ($.html().indexOf('验证码') >= 0) {
           captcha($)
-          console.log('需要验证码')
-          // throw new Error('需要验证码')
           return onError(new Error('需要验证码'), ip)
         } else {
           return formatOfficialList($)
         }
       })
       .catch((e) => {
-        // throw e
         return onError(e, ip)
       })
     })
@@ -183,5 +179,5 @@ for (let i = 0; i < 10000; i++) {
 }
 
 ProxyIP.start()
-common.syncPromise(arr)
+common.syncPromiseCatch(arr)
 

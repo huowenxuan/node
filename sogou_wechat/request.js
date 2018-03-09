@@ -19,7 +19,7 @@ function get(url, configs) {
   if (!configs.headers) configs.headers = {}
   Object.assign(configs.headers, Headers)
 
-  let params = {method: 'get', url, timeout: 2000}
+  let params = {method: 'get', url, timeout: 3000}
   Object.assign(params, configs)
   return axios(params).then((res)=>res.data)
 }

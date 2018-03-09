@@ -85,6 +85,7 @@ class ProxyIP {
       if (_Pool.size > 0) {
         resolve(_Pool)
       } else {
+        this._getIP()
         let timer = setInterval(() => {
           if (_Pool.size > 0) {
             resolve(_Pool)
@@ -100,19 +101,19 @@ class ProxyIP {
    * 从IP池循环获取IP
    */
   static IP() {
-    return this._Pool()
-      .then((pool) => {
-        if (_idx >= pool.size - 1) {
-          _idx = 0
-        } else {
-          _idx++
-        }
-        return Array.from(pool)[_idx]
-      })
+    return this._Pool().then((pool) => {
+      if (_idx >= (pool.size - 1)) {
+        _idx = 0
+      } else {
+        _idx++
+      }
+      console.log(`IP池共有${pool.size}个IP，使用第${_idx + 1}个`)
+      return Array.from(pool)[_idx]
+    })
   }
 
   static destroyIP(ip) {
-    console.log('废除一个IP:', ip)
+    console.log('废除IP:', ip)
     if (_Pool.has(ip)) {
       _Pool.delete(ip)
     }

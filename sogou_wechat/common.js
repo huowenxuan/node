@@ -47,7 +47,7 @@ function syncPromise(values) {
   })
 }
 
-function delay(duration = 500) {
+function delay(duration = 1000) {
   return new Promise((resolve) => setTimeout(resolve, duration))
 }
 
@@ -61,6 +61,7 @@ function toSet(arr) {
 
 module.exports = {
   syncPromise,
+  syncPromiseCatch,
   delay,
   toSet
 }
