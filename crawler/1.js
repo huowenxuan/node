@@ -1,8 +1,7 @@
 ﻿var async = require('async');
 let {getHTML} = require('./request')
 
-// 68kvkv 91kmkm 25kmkm 21kmkm 92kmkm 79kmkm 67popo 85kvkv 85kvkv 60 76 78kvkv 00pcpc 05pcpc 02pcpc
-let Host = 'http://www.04pcpc.com'
+let Host = 'http://www.24gmgm.com'
 
 let detailTimeoutList = []
 let detailErrorList = []
@@ -30,7 +29,6 @@ function handleError() {
     }
 }
 
-// eg: /video/2017-11/29494.html
 function getDetail(url, next) {
     getHTML(url, null, (err, $) => {
         if (err) {
@@ -41,27 +39,13 @@ function getDetail(url, next) {
                 detailErrorList.push(url)
             }
         } else {
-            // 获取到的数据只有script中有mp4
-            let mp4s = []
-            $("script").each(function (idx, element) {
-                let script = $(element).html()
-                if (script.indexOf('flashvars') !== -1) {
-                    let start = script.indexOf("f:'") + 3
-                    let end = script.indexOf(".mp4") + 4
-                    let mp4 = script.substring(start, end)
-                    mp4s.push(mp4)
-                    console.log(mp4)
-                }
-            })
-            next && next(null, mp4s)
+          let src = $('video source').attr('src')
+          console.log(src)
+          next && next(null, src)
         }
     })
 }
 
-// getDetail('http://www.85kvkv.com/video/2017-11/29547.html')
-// getDetail(Host + '/video/2017-11/29494.html')
-
-// eg: /diao/se57.html  /diao/se57_2.html
 function getList(url, next, start, end) {
     getHTML(url, null, (err, $) => {
         if (start !== undefined && start !== null && end !== undefined && end !== null) {
@@ -77,7 +61,7 @@ function getList(url, next, start, end) {
             next && next(null, null)
         } else {
             let asyncList = []
-            $('.video_box a').each(function (index, element) {
+            $('.video a').each(function (index, element) {
                 let $element = $(element);
                 let detailUrl = Host + $element.attr('href')
                 asyncList.push((next2) => getDetail(detailUrl, next2))
@@ -87,8 +71,6 @@ function getList(url, next, start, end) {
         }
     })
 }
-
-// getList(Host + '/diao/se57.html')
 
 function getLists(start, end, cb) {
     let asyncList = []
@@ -110,7 +92,9 @@ function getLists(start, end, cb) {
     })
 }
 
-getLists(0, 18, (err, cb) => {
+// getDetail('http://www.24gmgm.com/video/2018-3/32543.html')
+// getList(Host + '/diao/se57.html')
+getLists(0, 10, (err, cb) => {
     //
 })
 module.exports = {
