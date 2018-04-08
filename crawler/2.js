@@ -1,7 +1,6 @@
 ﻿var async = require('async');
 let {getHTML} = require('./request')
 
-// 68kvkv 91kmkm 25kmkm 21kmkm 92kmkm 79kmkm 67popo 85kvkv 85kvkv 60 76 78kvkv 00pcpc 05pcpc 02pcpc
 let Host = 'https://www.1973v.com'
 
 let detailTimeoutList = []
@@ -30,7 +29,6 @@ function handleError() {
   }
 }
 
-// https://www.1973v.com/Html/87/23721.html#
 function getDetail(url, next) {
   getHTML(url, null, (err, $) => {
     if (err) {
@@ -53,11 +51,6 @@ function getDetail(url, next) {
   })
 }
 
-
-// getDetail('http://www.85kvkv.com/video/2017-11/29547.html')
-// getDetail(Host + '/video/2017-11/29494.html')
-
-// eg: /diao/se57.html  /diao/se57_2.html
 function getList(url, next, start, end) {
   getHTML(url, null, (err, $) => {
     if (start !== undefined && start !== null && end !== undefined && end !== null) {
@@ -85,16 +78,17 @@ function getList(url, next, start, end) {
   })
 }
 
-// getDetail('https://www.1973v.com/Html/87/23706.html#')
-getList('https://www.3195v.com/Html/89/')
-// getList(Host + '/diao/se57.html')
+// 89 87 93
+// getList('https://www.1346x.com/Html/93/')
 
 function getLists(start, end, cb) {
   let asyncList = []
 
   for (let i = start; i <= end; i++) {
-    let url = Host + '/diao/se57.html'
-    if (i !== 1) url = Host + '/diao/se57_' + i + '.html'
+    let url = Host + '/Html/60/index-' + i + '.html'
+    if (i === 1) {
+      url = Host + '/Html/60/'
+    }
     asyncList.push((next2) => getList(url, next2, i, end))
   }
 
@@ -109,9 +103,9 @@ function getLists(start, end, cb) {
   })
 }
 
-// getLists(6, 25, (err, cb) => {
-//
-// })
+getLists(1, 10, (err, cb) => {
+
+})
 module.exports = {
   getLists,
 }
