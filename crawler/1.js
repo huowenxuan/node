@@ -1,7 +1,7 @@
 ﻿var async = require('async');
 let {getHTML} = require('./request')
 
-let Host = 'http://www.24gmgm.com'
+let Host = 'http://www.66kvkv.com'
 
 let detailTimeoutList = []
 let detailErrorList = []
@@ -39,8 +39,16 @@ function getDetail(url, next) {
         detailErrorList.push(url)
       }
     } else {
-      let src = $('video source').attr('src')
-      console.log(src)
+      let src = ''
+      $('script').each(function (idx, el){
+        let script = $(el).html()
+        if (script.indexOf('flashvars') > -1) {
+          let start = script.indexOf("f:'") + "f:'".length
+          let end = script.indexOf("',")
+          src = script.substring(start, end)
+          console.log(src)
+        }
+      })
       next && next(null, src)
     }
   })
@@ -61,7 +69,7 @@ function getList(url, next, start, end) {
       next && next(null, null)
     } else {
       let asyncList = []
-      $('.video a').each(function (index, element) {
+      $('.video_box a').each(function (index, element) {
         let $element = $(element);
         let detailUrl = Host + $element.attr('href')
         asyncList.push((next2) => getDetail(detailUrl, next2))
@@ -96,7 +104,8 @@ function getLists(start, end, cb) {
 
 // getDetail('http://www.24gmgm.com/video/2018-3/32543.html')
 // getList(Host + '/diao/se57.html')
-getLists(1, 9, (err, cb) => {
+// 5.13
+getLists(1, 25, (err, cb) => {
   //
 })
 module.exports = {
