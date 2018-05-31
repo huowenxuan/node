@@ -1,5 +1,5 @@
 {
-  "name": "pa",
+  "name": "node",
   "version": "0.2.2",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/huowenxuan/pa.git"
+    "url": "git+https://github.com/huowenxuan/node.git"
   },
   "author": "",
   "license": "ISC",
