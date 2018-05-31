@@ -1,7 +1,7 @@
 let superagent = require('superagent')
 let fetch = require('node-fetch')
 let queryString = require('querystring')
-let request = require('../crawler/request')
+let request = require('../../crawler/request')
 var cheerio = require('cheerio');
 
 function getHistory(biz, token, offset, count) {

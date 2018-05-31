@@ -14,7 +14,6 @@
   "license": "ISC",
   "dependencies": {
     "anyproxy": "^4.0.6",
-    "async": "^2.6.0",
     "axios": "^0.18.0",
     "cheerio": "^1.0.0-rc.2",
     "iconv-lite": "^0.4.19",
@@ -23,8 +22,6 @@
     "query-string": "^5.1.0",
     "superagent": "^3.8.1",
     "superagent-charset": "^1.2.0",
-    "tunnel": "0.0.5",
-    "urijs": "^1.19.1",
-    "xmlhttprequest": "^1.8.0"
+    "urijs": "^1.19.1"
   }
 }

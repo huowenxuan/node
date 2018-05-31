@@ -1,5 +1,4 @@
 var axios = require('axios')
-var tunnel = require('tunnel')
 
 const Headers = {
   charset: 'utf-8',
