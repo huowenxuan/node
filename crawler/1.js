@@ -60,9 +60,9 @@ function getList(url, start, end, onGetDetail, onDetailError) {
 async function getLists(start, end, onGetDetail, onDetailError, onGetList, onListError) {
   let error = null
   for (let i = start; i <= end; i++) {
-    let url = Host + 'diao/se57.html'
+    let url = Host + '/diao/se57.html'
     if (i !== 1) {
-      url = Host + 'diao/se57_' + i + '.html'
+      url = Host + '/diao/se57_' + i + '.html'
     }
     try {
       let urls = await getList(url, i, end, onGetDetail, onDetailError)
