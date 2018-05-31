@@ -1,6 +1,7 @@
 ﻿let {getHTML} = require('./request')
 
-let Host = 'http://www.66kvkv.com'
+const OriginalHost = 'http://www.66kvkv.com'
+let Host = OriginalHost
 
 function getDetail(url) {
   return getHTML(url)
@@ -79,8 +80,13 @@ async function getLists(start, end, onGetDetail, onDetailError, onGetList, onLis
   }
 }
 
+function setHost(host) {
+  Host = host
+}
+
 // 5.29
 module.exports = {
+  setHost,
   Host,
   getDetail,
   getList,

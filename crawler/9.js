@@ -1,6 +1,7 @@
 ﻿let {getHTML9} = require('./request')
 
-let Host = 'http://91porn.com/'
+const OriginalHost = 'http://www.66kvkv.com'
+let Host = OriginalHost
 
 function getDetail(url) {
   return getHTML9(url)
@@ -78,6 +79,10 @@ async function getLists(start, end, onGetDetail, onDetailError, onGetList, onLis
   } else {
     return
   }
+}
+
+function setHost(host) {
+  Host = host
 }
 
 module.exports = {
