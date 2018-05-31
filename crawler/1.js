@@ -104,7 +104,7 @@ function getLists(start, end, cb) {
 
 // getDetail('http://www.24gmgm.com/video/2018-3/32543.html')
 // getList(Host + '/diao/se57.html')
-// 5.13
+// 5.29
 getLists(1, 25, (err, cb) => {
   //
 })

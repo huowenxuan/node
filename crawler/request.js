@@ -2,6 +2,8 @@ var cheerio = require('cheerio');
 var superagent = require('superagent')
 require('superagent-charset')(superagent)
 var _ = require('lodash')
+var axios = require('axios')
+
 
 function getHTML(url, options, cb) {
   options = options || {}
@@ -25,6 +27,30 @@ function getHTML(url, options, cb) {
     })
 }
 
+// 不支持charset，但是可以上9
+function getHTML9(url, options, cb) {
+  axios({
+    data: null,
+    method: 'get',
+    url: 'http://91porn.com/index.php',
+    timeout: 10000,
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+    .then((res) => {
+      console.log(res.data)
+      // let $ = cheerio.load(res.data);
+      // cb && cb(null, $)
+    })
+    .catch((e) => {
+      console.log(e)
+      cb && cb(e, null)
+    })
+}
+
 module.exports = {
   getHTML,
+  getHTML9
 }
